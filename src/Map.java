@@ -7,6 +7,8 @@ import java.io.Serializable;
  *
  */
 public class Map implements Map2D, Serializable{
+    private int [][] _map;
+
 
     // edit this class below
 	/**
@@ -15,7 +17,8 @@ public class Map implements Map2D, Serializable{
 	 * @param h
 	 * @param v
 	 */
-	public Map(int w, int h, int v) {init(w, h, v);}
+	public Map(int w, int h, int v) {
+        init(w, h, v);}
 	/**
 	 * Constructs a square map (size*size).
 	 * @param size
@@ -31,35 +34,59 @@ public class Map implements Map2D, Serializable{
 	}
 	@Override
 	public void init(int w, int h, int v) {
+        this._map = new int[w][h];
+        for(int x=0; x<w; x++) {
+            for (int y=0; y<h; y++) {
+                this._map[x][y] = v;
+            }
+        }
 
 	}
 	@Override
 	public void init(int[][] arr) {
+        this._map = arr;
+        if(_map==null) {
+            throw new RuntimeException("Array is Null");
+        }
+        int w =arr.length;
+        int h =arr[0].length;
+        this._map = new int[w][h];
+        for(int x=0; x<w; x++) {
+            for(int y=0; y<h; y++) {
+                this._map[x][y] = arr[x][y];
+            }
+        }
 
 	}
 	@Override
 	public int[][] getMap() {
-		int[][] ans = null;
-
+        int w = this.getWidth();
+        int h = this.getHeight();
+        int[][] ans = new int[w][h];
+        for(int x=0; x<w; x++) {
+            for (int y=0; y<h; y++) {
+                ans[x][y] = this._map[x][y];
+            }
+        }
 		return ans;
 	}
 	@Override
 	public int getWidth() {
-        int ans = -1;
+        return this._map.length;
 
-        return ans;
     }
 	@Override
 	public int getHeight() {
-        int ans = -1;
 
-        return ans;
+        return this._map[0].length;
     }
 	@Override
 	public int getPixel(int x, int y) {
-        int ans = -1;
+        if (x < 0 || y < 0 || x >= this.getWidth() || y >= this.getHeight()) {
+            return -1;
+        }
 
-        return ans;
+        return this._map[x][y];
     }
 	@Override
 	public int getPixel(Pixel2D p) {
