@@ -90,40 +90,67 @@ public class Map implements Map2D, Serializable{
     }
 	@Override
 	public int getPixel(Pixel2D p) {
-        int ans = -1;
+        if ( p==null) {
+            return 0;
+        }
+        return this.getPixel(p.getX(), p.getY());
 
-        return ans;
 	}
 	@Override
 	public void setPixel(int x, int y, int v) {
-
+        if (x < 0 || y < 0 || x >= this.getWidth() || y >= this.getHeight()) {
+            throw new IndexOutOfBoundsException("The pixel is out of bound");
+        }
+        this._map[x][y] = v;
     }
 	@Override
 	public void setPixel(Pixel2D p, int v) {
-
+        if (p==null) { return; }
+        this.setPixel(p.getX(), p.getY(), v);
 	}
 
     @Override
     public boolean isInside(Pixel2D p) {
-        boolean ans = true;
-
-        return ans;
+        if (p == null) {
+            return false;
+        }
+        int x = p.getX();
+        int y = p.getY();
+        if (x < 0 || y < 0 || x >= this.getWidth() || y >= this.getHeight()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean sameDimensions(Map2D p) {
-        boolean ans = false;
-
-        return ans;
+        if(p==null) {return false;}
+        if(this.getWidth() !=p.getWidth() || this.getHeight() !=p.getHeight()) {return false;}
+        return true;
     }
 
     @Override
     public void addMap2D(Map2D p) {
+        if(!this.sameDimensions(p)) { throw new RuntimeException("Map2D Dimensions Error");}
+        int w = p.getWidth();
+        int h = p.getHeight();
+        for(int x=0; x<w; x++) {
+            for(int y=0; y<h; y++) {
+
+            }
+        }
 
     }
 
     @Override
     public void mul(double scalar) {
+        for(int x=0; x<this.getWidth(); x++) {
+            for(int y=0; y<this.getHeight(); y++) {
+                int before =this.getPixel(x,y);
+                int after =(int)(scalar*before);
+                this.setPixel(x,y,after);
+            }
+        }
 
     }
 
@@ -134,11 +161,26 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawCircle(Pixel2D center, double rad, int color) {
-
+        int centerX = center.getX();
+        int centerY = center.getY();
+        double diameter=rad*rad;
+        for(int x=0; x<this.getWidth(); x++) {
+            for(int y=0; y<this.getHeight(); y++) {
+                int dx = (x-centerX);
+                int dy = (y-centerY);
+                int dist = (dx*dx)+(dy*dy);
+                if (dist <=diameter) {
+                    setPixel(x, y, color);
+                }
+            }
+        }
     }
-
     @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int color) {
+        int dx = Math.abs(p2.getX() - p1.getX());
+        int dy =  Math.abs(p2.getY() - p1.getY());
+        if(dx ==0 && dy==0) { return;
+        }
 
     }
 
