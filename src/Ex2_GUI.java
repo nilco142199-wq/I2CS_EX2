@@ -153,48 +153,27 @@ public class Ex2_GUI {
                 map.setPixel(x, y, PATH);
         startX = startY = endX = endY = -1;
     }
-/**
- * Finds and marks the shortest path from the start to the end point on the map.
- *
- * This method uses a breadth-first search (BFS) to explore the map from the start coordinates.
- * It avoids walls (cells with the WALL value) and tracks the previous cell for each visited cell.
- * Once the end point is reached, it backtracks through the parent pointers to mark the shortest path
- * with the ROUTE value. If no path exists, the map remains unchanged.
- *
- * Preconditions:
- * startX/startY and endX/endY must be set (not -1)
- */
 
+    /**
+     * Finds and marks the shortest path from the start to the end point on the map.
+     *
+     * This method uses the Map class's shortestPath function, which internally
+     * uses BFS to compute the path avoiding WALL cells.
+     *
+     * Preconditions:
+     * startX/startY and endX/endY must be set (not -1)
+     */
     public static void solve(Map2D map) {
         if (startX == -1 || endX == -1) return;
 
-        int w = map.getWidth(), h = map.getHeight();
-        int[][] px = new int[w][h], py = new int[w][h];
-        boolean[][] vis = new boolean[w][h];
-        Queue<int[]> q = new LinkedList<>();
+        Index2D start = new Index2D(startX, startY);
+        Index2D end = new Index2D(endX, endY);
 
-        q.add(new int[]{startX, startY});
-        vis[startX][startY] = true;
-        int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-        boolean found = false;
-
-        while (!q.isEmpty()) {
-            int[] c = q.poll();
-            if (c[0] == endX && c[1] == endY) { found = true; break; }
-            for (int[] d : dirs) {
-                int nx = c[0] + d[0], ny = c[1] + d[1];
-                if (nx >= 0 && nx < w && ny >= 0 && ny < h && !vis[nx][ny] && map.getPixel(nx, ny) != WALL) {
-                    vis[nx][ny] = true; px[nx][ny] = c[0]; py[nx][ny] = c[1];
-                    q.add(new int[]{nx, ny});
-                }
-            }
-        }
-        if (found) {
-            int cx = px[endX][endY], cy = py[endX][endY];
-            while (cx != startX || cy != startY) {
-                map.setPixel(cx, cy, ROUTE);
-                int tx = px[cx][cy], ty = py[cx][cy];
-                cx = tx; cy = ty;
+        Pixel2D[] path = ((Map) map).shortestPath(start, end, WALL, false);
+        if (path != null) {
+            for (int i = 1; i < path.length - 1; i++) {
+                Pixel2D p = path[i];
+                map.setPixel(p.getX(), p.getY(), ROUTE);
             }
         }
     }
