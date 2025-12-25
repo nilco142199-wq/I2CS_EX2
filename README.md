@@ -10,6 +10,7 @@ Get and set pixel values
 Boundary checks
 Drawing operations: rectangle, line, and circle
 Scalar multiplication and rescaling
+
 Flood fill algorithm (with and without cyclic behavior)
 Shortest path between two points using BFS
 Distance map from a starting point using BFS
@@ -47,5 +48,8 @@ The implementation follows the given interfaces without changes
 Summary
 All required methods were implemented, tested, and the GUI works as expected.
 Equality check
+
+<img width="779" height="955" alt="צילום מסך 2025-12-25 143731" src="https://github.com/user-attachments/assets/32606baf-c7c9-4508-b7ce-8c9cf9755bf3" />
+
 
 String representation
