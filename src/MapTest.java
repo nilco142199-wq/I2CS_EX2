@@ -34,10 +34,10 @@ class MapTest {
         Pixel2D start = new Index2D(0, 0);
         int newColor = 2;
         int filled = map.fill(start, newColor, false);
-        assertEquals(8, filled, "Should fill 8 pixels"); // כל הפיקסלים מלבד המחסום
+        assertEquals(8, filled, "Should fill 8 pixels");
         assertEquals(newColor, map.getPixel(0, 0));
         assertEquals(newColor, map.getPixel(0, 1));
-        assertEquals(1, map.getPixel(1, 1)); // המחסום לא משתנה
+        assertEquals(1, map.getPixel(1, 1));
     }
     @Test
     void testAllDistanceBasic() {
@@ -133,7 +133,7 @@ class MapTest {
     void testAllDistanceCyclic() {
         Map m = new Map(3,3,0);
         Map2D d = m.allDistance(new Index2D(0,0), 9, true);
-        assertEquals(1, d.getPixel(2,0)); // wrap
+        assertEquals(1, d.getPixel(2,0));
     }
 
 
