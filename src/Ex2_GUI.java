@@ -212,8 +212,6 @@ public class Ex2_GUI {
             if (StdDraw.isMousePressed()) {
                 double mx = StdDraw.mouseX(), my = StdDraw.mouseY();
                 int ix = (int) Math.round(mx), iy = (int) Math.round(my);
-
-                // כפתור CLEAR
                 if (mx >= w*0.05 && mx <= w*0.35 && my <= -1) resetMap(map);
                 else if (mx >= w*0.35 && mx <= w*0.65 && my <= -1) solve(map);
                 else if (mx >= w*0.65 && mx <= w*0.95 && my <= -1) saveMap(map, "map_saved.txt");
