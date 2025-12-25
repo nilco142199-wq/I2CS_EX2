@@ -57,6 +57,95 @@ class MapTest {
     }
 
     @Test
+    void testGetSetPixel() {
+        Map2D m = new Map(4,4,0);
+        m.setPixel(2, 3, 7);
+        assertEquals(7, m.getPixel(2,3));
+        assertEquals(-1, m.getPixel(-1,0));
+    }
+    @Test
+    void testIsInside() {
+        Map2D m = new Map(3,3,0);
+        assertTrue(m.isInside(new Index2D(0,0)));
+        assertFalse(m.isInside(new Index2D(-1,0)));
+        assertFalse(m.isInside(null));
+    }
+    @Test
+    void testSameDimensions() {
+        Map2D m1 = new Map(3,3,0);
+        Map2D m2 = new Map(3,3,1);
+        Map2D m3 = new Map(4,3,0);
+        assertTrue(m1.sameDimensions(m2));
+        assertFalse(m1.sameDimensions(m3));
+    }
+    @Test
+    void testAddMap2D() {
+        Map m1 = new Map(2,2,1);
+        Map m2 = new Map(2,2,2);
+        m1.addMap2D(m2);
+        assertEquals(2, m1.getPixel(0,0));
+    }
+    @Test
+    void testRescaleUp() {
+        Map m = new Map(2,2,5);
+        m.rescale(2,2);
+        assertEquals(4, m.getWidth());
+        assertEquals(4, m.getHeight());
+    }@Test
+    void testDrawRect() {
+        Map m = new Map(5,5,0);
+        m.drawRect(new Index2D(1,1), new Index2D(3,3), 9);
+        assertEquals(9, m.getPixel(2,2));
+        assertEquals(0, m.getPixel(0,0));
+    }
+    @Test
+    void testDrawCircle() {
+        Map m = new Map(5,5,0);
+        m.drawCircle(new Index2D(2,2), 1.5, 8);
+        assertEquals(8, m.getPixel(2,2));
+    }
+    @Test
+    void testDrawLine() {
+        Map m = new Map(5,5,0);
+        m.drawLine(new Index2D(0,0), new Index2D(4,4), 7);
+        assertEquals(7, m.getPixel(2,2));
+    }
+    @Test
+    void testFillCyclic() {
+        Map m = new Map(3,3,0);
+        m.setPixel(1,1,1);
+        int filled = m.fill(new Index2D(0,0), 2, true);
+        assertEquals(8, filled);
+    }
+    @Test
+    void testShortestPathNoPath() {
+        Map m = new Map(3,3,0);
+        m.drawRect(new Index2D(0,1), new Index2D(2,1), 1);
+        Pixel2D[] path = m.shortestPath(
+                new Index2D(0,0),
+                new Index2D(2,2),
+                1,
+                false
+        );
+        assertNull(path);
+    }
+    @Test
+    void testAllDistanceCyclic() {
+        Map m = new Map(3,3,0);
+        Map2D d = m.allDistance(new Index2D(0,0), 9, true);
+        assertEquals(1, d.getPixel(2,0)); // wrap
+    }
+
+
+
+    @Test
+    void testMul() {
+        Map m = new Map(2,2,3);
+        m.mul(2);
+        assertEquals(6, m.getPixel(0,0));
+    }
+
+    @Test
     void testShortestPathBasic() {
         Map2D map = new Map(3, 3, 0);
         map.setPixel(1, 1, 1);
